@@ -1,9 +1,9 @@
 <template>
   <div class="rules">
-    <RuleRow v-for="rule in rules" :key="rule.id" :uid="rule.id" v-model="rule.expression" />
+    <RuleRow v-for="rule in rules" :key="rule.id" :uid="rule.id" v-model="rule.config" />
     <button @click.prevent="addRule">Add Rule</button>
 
-    <pre>{{ expression }}</pre>
+    <pre>{{ ruleConfig }}</pre>
   </div>
 </template>
 
@@ -22,14 +22,14 @@ export default {
     addRule () {
       this.rules.push({
         id: this.id++,
-        expression: {}
+        config: {}
       })
     }
   },
 
   computed: {
-    expression () {
-      return this.rules.map(rule => rule.expression)
+    ruleConfig () {
+      return this.rules.map(rule => rule.config)
     }
   }
 }

@@ -9,11 +9,9 @@
       <option v-for="model in models" :key="model.name" :value="model">{{ model.label }}</option>
     </select>
 
-    <Rule :model="selectedModel" v-if="selectedModel" v-model="ruleExpression" />
+    <Rule :model="selectedModel" v-if="selectedModel" v-model="ruleConfig" />
 
-    <span class="suffix">
-      {{ selectedModel.suffix }}
-    </span>
+    <span class="suffix">{{ selectedModel.suffix }}</span>
   </div>
 </template>
 
@@ -30,7 +28,7 @@ export default {
     logic: 'and',
     models,
     selectedModel: models[0],
-    ruleExpression: {}
+    ruleConfig: {}
   }),
 
   watch: {
@@ -38,16 +36,16 @@ export default {
       this.emitCompiledRule()
     },
 
-    ruleExpression () {
+    ruleConfig () {
       this.emitCompiledRule()
     }
   },
 
   methods: {
     emitCompiledRule () {
-      const cloned = JSON.parse(JSON.stringify(this.ruleExpression))
-      cloned.logic = this.logic
-      this.$emit('input', cloned)
+      const clonedConfig = JSON.parse(JSON.stringify(this.ruleConfig))
+      clonedConfig.logic = this.logic
+      this.$emit('input', clonedConfig)
     }
   }
 }
