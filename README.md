@@ -1,4 +1,6 @@
-# rule-engine
+# smart-playlist-creator
+
+> A PoC smart playlist creator (à la iTunes).
 
 ## Project setup
 ```
