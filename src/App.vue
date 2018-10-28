@@ -3,7 +3,7 @@
     <RuleRow v-for="rule in rules" :key="rule.id" :uid="rule.id" v-model="rule.expression" />
     <button @click.prevent="addRule">Add Rule</button>
 
-    {{ expression }}
+    <pre>{{ expression }}</pre>
   </div>
 </template>
 
@@ -22,16 +22,14 @@ export default {
     addRule () {
       this.rules.push({
         id: this.id++,
-        expression: ''
+        expression: {}
       })
     }
   },
 
   computed: {
     expression () {
-      const rawExpression = this.rules.reduce((accumulator, rule) => `${accumulator} ${rule.expression}`, '')
-      // trim the leading and|or logical expression
-      return rawExpression.replace(/((?:and|or) )/i, '')
+      return this.rules.map(rule => rule.expression)
     }
   }
 }

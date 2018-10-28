@@ -53,9 +53,11 @@ export default {
 
   methods: {
     onInput () {
-      const inputValues = this.availableInputs.map(input => `"${escape(input.value)}"`)
-      const inputValueString = inputValues.join(', ')
-      this.$emit('input', `${this.selectedOption.operator} ${inputValueString}`)
+      this.$emit('input', {
+        model: this.model.name,
+        operator: this.selectedOption.operator,
+        value: this.availableInputs.map(input => input.value)
+      })
     }
   }
 }

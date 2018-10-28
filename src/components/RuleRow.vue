@@ -30,7 +30,7 @@ export default {
     logic: 'and',
     models,
     selectedModel: models[0],
-    ruleExpression: ''
+    ruleExpression: {}
   }),
 
   watch: {
@@ -45,7 +45,9 @@ export default {
 
   methods: {
     emitCompiledRule () {
-      this.$emit('input', `${this.logic} (${this.selectedModel.name} ${this.ruleExpression})`)
+      const cloned = JSON.parse(JSON.stringify(this.ruleExpression))
+      cloned.logic = this.logic
+      this.$emit('input', cloned)
     }
   }
 }
