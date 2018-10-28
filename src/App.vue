@@ -1,28 +1,44 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="rules">
+    <RuleRow v-for="rule in rules" :key="rule.id" :uid="rule.id" v-model="rule.expression" />
+    <button @click.prevent="addRule">Add Rule</button>
+
+    {{ expression }}
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import RuleRow from './components/RuleRow'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  components: { RuleRow },
+
+  data: () => ({
+    rules: [],
+    id: 0
+  }),
+
+  methods: {
+    addRule () {
+      this.rules.push({
+        id: this.id++,
+        expression: ''
+      })
+    }
+  },
+
+  computed: {
+    expression () {
+      const rawExpression = this.rules.reduce((accumulator, rule) => `${accumulator} ${rule.expression}`, '')
+      // trim the leading and|or logical expression
+      return rawExpression.replace(/((?:and|or) )/i, '')
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+select {
+  display: inline-block;
 }
 </style>
