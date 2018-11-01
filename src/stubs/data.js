@@ -1,27 +1,43 @@
 export default [
   {
+    "logic": "and",
     "model": "title",
     "operator": "~",
     "value": [
-      "Night"
-    ],
-    "logic": "and"
+      "Wut"
+    ]
   },
   {
+    "logic": "and",
     "model": "album",
     "operator": "!~",
     "value": [
-      "wish"
-    ],
-    "logic": "and"
+      "Bright"
+    ]
   },
   {
+    "logic": "or",
     "model": "dateAdded",
     "operator": "in",
     "value": [
       "2018-07-11",
       "2018-10-11"
-    ],
-    "logic": "or"
+    ]
+  },
+  {
+    "logic": "and",
+    "model": "lastPlayed",
+    "operator": "=",
+    "value": [
+      "2013-05-02"
+    ]
+  },
+  {
+    "logic": "or",
+    "model": "bit_rate",
+    "operator": ">",
+    "value": [
+      "127"
+    ]
   }
 ]

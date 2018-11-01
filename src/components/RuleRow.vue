@@ -72,11 +72,16 @@ export default {
       for (let i = 0, inputCount =  this.selectedOperator.inputs || 1; i < inputCount; ++i) {
         inputs.push({
           id: `${this.mutatedRule.model.name}_${this.selectedOperator.operator}_${i}`,
-          value: this.resolveInputValue(i)
+          value: this.isOriginalOperatorSelected ? this.mutatedRule.value[i] : ''
         })
       }
 
       return inputs
+    },
+
+    isOriginalOperatorSelected () {
+      return this.selectedModel === this.mutatedRule.model &&
+        this.selectedOperator.operator === this.mutatedRule.operator
     }
   },
 
@@ -87,20 +92,6 @@ export default {
   },
 
   methods: {
-    emitCompiledRule () {
-      const clonedConfig = JSON.parse(JSON.stringify(this.ruleConfig))
-      clonedConfig.logic = this.logic
-      this.$emit('input', clonedConfig)
-    },
-
-    resolveInputValue(index) {
-      if (this.selectedModel === this.mutatedRule.model && this.selectedOperator.operator === this.mutatedRule.operator) {
-        return this.mutatedRule.value[index]
-      } else {
-        return ''
-      }
-    },
-
     onInput () {
       this.$emit('input', {
         id: this.mutatedRule.id,
