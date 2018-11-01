@@ -1,5 +1,5 @@
 <template>
-  <input :type="type" v-model="mutableValue">
+  <input :type="type" v-model="mutableValue" required>
 </template>
 
 <script>
