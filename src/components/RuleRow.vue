@@ -22,13 +22,10 @@
     />
 
     <span class="suffix">{{ selectedModel.suffix }}</span>
-
-    <pre>{{ mutatedRule }}</pre>
   </div>
 </template>
 
 <script>
-/*eslint no-console: ["error", { allow: ["log"] }] */
 import models from './models'
 import types from './types'
 import Rule from './Rule'
@@ -101,8 +98,13 @@ export default {
     },
 
     onInput () {
-      this.mutatedRule.value = this.availableInputs.map(input => input.value),
-      this.$emit('input', this.mutatedRule)
+      this.$emit('input', {
+        id: this.mutatedRule.id,
+        logic: this.mutatedRule.logic,
+        model: this.selectedModel,
+        operator: this.selectedOperator.operator,
+        value: this.availableInputs.map(input => input.value)
+      })
     }
   }
 }

@@ -3,7 +3,7 @@
     <RuleRow v-for="rule in rules" :key="rule.id" :rule="rule" @input="updateRule" />
     <button @click.prevent="addRule">Add Rule</button>
 
-    <!-- <pre>{{ ruleConfig }}</pre> -->
+    <pre>{{ ruleConfig }}</pre>
 
     <button type="submit">Submit</button>
   </form>
@@ -44,10 +44,6 @@ export default {
         operator: rule.operator,
         value: rule.value
       }
-    },
-
-    submit () {
-
     },
 
     updateRule(mutatedRule) {
