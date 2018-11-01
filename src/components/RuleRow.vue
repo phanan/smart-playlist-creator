@@ -50,6 +50,10 @@ export default {
       } else {
         this.selectedOperator = this.options[0]
       }
+    },
+
+    'mutatedRule.logic' () {
+      this.onInput()
     }
   },
 
