@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="logic" v-if="mutatedRule.id !== 0">
+    <div class="logic" v-if="!first">
       <label><input type="radio" v-model="mutatedRule.logic" value="and" :name="`logic_${mutatedRule.id}`" checked> and</label>
       <label><input type="radio" v-model="mutatedRule.logic" value="or" :name="`logic_${mutatedRule.id}`"> or</label>
     </div>
@@ -21,7 +21,8 @@
       @input="onInput"
     />
 
-    <span class="suffix">{{ selectedModel.suffix }}</span>
+    <span class="suffix">{{ selectedOperator.unit || selectedModel.unit }}</span>
+    <button @click.prevent="removeRule">Remove</button>
   </div>
 </template>
 
@@ -33,7 +34,7 @@ import DynamicInput from './DynamicInput'
 
 export default {
   components: { Rule, DynamicInput },
-  props: ['rule'],
+  props: ['rule', 'first'],
 
   data: () => ({
     models,
@@ -100,6 +101,10 @@ export default {
         operator: this.selectedOperator.operator,
         value: this.availableInputs.map(input => input.value)
       })
+    },
+
+    removeRule () {
+      this.$emit('remove')
     }
   }
 }

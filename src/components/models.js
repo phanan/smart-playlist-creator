@@ -19,7 +19,7 @@ export default [
     name: 'bit_rate',
     type: 'number',
     label: 'Bit Rate',
-    suffix: 'kbps'
+    unit: 'kbps'
   }, {
     name: 'plays',
     type: 'number',
@@ -32,7 +32,7 @@ export default [
     name: 'length',
     type: 'number',
     label: 'Length',
-    suffix: 'seconds'
+    unit: 'seconds'
   }, {
     name: 'dateAdded',
     type: 'date',

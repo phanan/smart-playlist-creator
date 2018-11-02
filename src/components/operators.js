@@ -47,11 +47,13 @@ export const endsWith = {
 export const inLast = {
   operator: 'inLast',
   label: 'in the last',
-  type: 'number' // overriding
+  type: 'number', // overriding
+  unit: 'days'
 }
 
 export const notInLast = {
   operator: '!inLast',
   label: 'not in the last',
-  type: 'number' // overriding
+  type: 'number', // overriding
+  unit: 'days'
 }

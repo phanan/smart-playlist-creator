@@ -1,6 +1,14 @@
 <template>
   <form class="rules" @submit.prevent="submit">
-    <RuleRow v-for="rule in rules" :key="rule.id" :rule="rule" @input="updateRule" />
+    <RuleRow
+      v-for="(rule, id) in rules"
+      :first="id === 0"
+      :key="rule.id"
+      :rule="rule"
+      @input="updateRule"
+      @remove="removeRule(rule)"
+    />
+
     <button @click.prevent="addRule">Add Rule</button>
 
     <pre>{{ ruleConfig }}</pre>
@@ -51,6 +59,10 @@ export default {
       for (const prop in mutatedRule) {
         changedRule[prop] = mutatedRule[prop]
       }
+    },
+
+    removeRule(rule) {
+      this.rules = this.rules.filter(r => r.id !== rule.id)
     }
   },
 
