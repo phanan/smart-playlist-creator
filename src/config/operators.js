@@ -1,46 +1,46 @@
 export const is = {
-  operator: '=',
+  operator: 'is',
   label: 'is'
 }
 
 export const isNot = {
-  operator: '!=',
+  operator: 'isNot',
   label: 'is not'
 }
 
 export const contains = {
-  operator: '~',
+  operator: 'contains',
   label: 'contains'
 }
 
 export const notContain = {
-  operator: '!~',
+  operator: 'notContain',
   label: 'does not contain',
 }
 
 export const isBetween = {
-  operator: 'in',
+  operator: 'isBetween',
   label: 'is between',
   inputs: 2
 }
 
 export const isGreaterThan = {
-  operator: '>',
+  operator: 'isGreaterThan',
   label: 'is greater than',
 }
 
 export const isLessThan = {
-  operator: '<',
+  operator: 'isLessThan',
   label: 'is less than',
 }
 
 export const beginsWith = {
-  operator: '^=',
+  operator: 'beginsWith',
   label: 'begins with',
 }
 
 export const endsWith = {
-  operator: '$=',
+  operator: 'endsWith',
   label: 'ends with',
 }
 
@@ -52,8 +52,12 @@ export const inLast = {
 }
 
 export const notInLast = {
-  operator: '!inLast',
+  operator: 'notInLast',
   label: 'not in the last',
   type: 'number', // overriding
   unit: 'days'
 }
+
+export default [
+  is, isNot, contains, notContain, isBetween, isGreaterThan, isLessThan, beginsWith, endsWith, inLast, notInLast
+]

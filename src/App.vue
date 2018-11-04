@@ -1,87 +1,103 @@
 <template>
-  <form class="rules" @submit.prevent="submit">
-    <RuleRow
-      v-for="(rule, id) in rules"
-      :first="id === 0"
-      :key="rule.id"
-      :rule="rule"
-      @input="updateRule"
-      @remove="removeRule(rule)"
-    />
+  <div class="wrapper">
+    <form class="rules" @submit.prevent="submit">
+      <RuleGroup
+        v-for="(group, index) in ruleGroups"
+        :isFirstGroup="index === 0"
+        :key="group.id"
+        :group="group"
+        @input="onGroupChanged"
+      />
 
-    <button @click.prevent="addRule">Add Rule</button>
+      <button @click.prevent="addGroup">+ OR</button>
 
-    <pre>{{ ruleConfig }}</pre>
-
-    <button type="submit">Submit</button>
-  </form>
+    </form>
+    <pre class="preview">{{ ruleGroups }}</pre>
+  </div>
 </template>
 
 <script>
-import models from './components/models'
-import RuleRow from './components/RuleRow'
 import initData from './stubs/data'
 
 export default {
-  components: { RuleRow },
+  components: {
+    RuleGroup: () => import('./components/RuleGroup')
+  },
 
   data: () => ({
-    id: 0,
-    rules: []
+    ruleGroups: JSON.parse(JSON.stringify(initData))
   }),
 
   methods: {
-    addRule () {
-      this.rules.push(this.createRule())
+    addGroup () {
+      this.ruleGroups.push(this.createGroup())
     },
 
-    createRule (logic = 'and', model = 'title', operator = '=', value = []) {
+    onGroupChanged (data) {
+      let changedGroup = this.ruleGroups.find(g => g.id === data.id)
+      changedGroup = Object.assign(changedGroup, data)
+
+      // Remove empty group
+      if (changedGroup.rules.length === 0) {
+        this.ruleGroups = this.ruleGroups.filter(group => group.id !== changedGroup.id)
+      }
+    },
+
+    createGroup () {
       return {
-        logic,
-        operator,
-        value,
-        id: this.id++,
-        model: models.find(m => m.name === model)
+        id: (new Date).getTime(),
+        rules: []
       }
-    },
-
-    jsontify (rule) {
-      return {
-        logic: rule.logic,
-        model: rule.model.name,
-        operator: rule.operator,
-        value: rule.value
-      }
-    },
-
-    updateRule(mutatedRule) {
-      const changedRule = this.rules.find(r => r.id === mutatedRule.id)
-      for (const prop in mutatedRule) {
-        changedRule[prop] = mutatedRule[prop]
-      }
-    },
-
-    removeRule(rule) {
-      this.rules = this.rules.filter(r => r.id !== rule.id)
-    }
-  },
-
-  created () {
-    initData.forEach(rule => {
-      this.rules.push(this.createRule(rule.logic, rule.model, rule.operator, rule.value))
-    })
-  },
-
-  computed: {
-    ruleConfig () {
-      return this.rules.map(rule => this.jsontify(rule))
     }
   }
 }
 </script>
 
-<style>
-select {
+<style lang="scss">
+*, *::before, *::after {
+  box-sizing: border-box;
+  color: #333;
+}
+
+p, div {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+}
+
+select, button, input {
   display: inline-block;
+  background: #fff;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid #dadfe2;
+  border-radius: 3px;
+  margin-right: 4px;
+}
+
+select, input {
+  width: 128px;
+}
+
+button {
+  background: #f1f4f5;
+  cursor: pointer;
+}
+
+.wrapper {
+  display: flex;
+
+  > form, > pre {
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 15px;
+  }
+
+  pre {
+    font-family: Monaco, Consolas, Courier, monospace;
+    font-size: .7rem;
+    line-height: 1.4;
+    background: #f1f4f5;
+    min-height: 100vh;
+  }
 }
 </style>

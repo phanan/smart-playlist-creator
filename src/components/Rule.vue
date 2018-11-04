@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import types from './types'
+import types from '../config/types'
 import DynamicInput from './DynamicInput'
 
 export default {

@@ -4,11 +4,11 @@ export default [
     type: 'text',
     label: 'Title'
   }, {
-    name: 'album',
+    name: 'album.name',
     type: 'text',
     label: 'Album'
   }, {
-    name: 'artist',
+    name: 'artist.name',
     type: 'text',
     label: 'Artist'
   }, {
@@ -21,11 +21,11 @@ export default [
     label: 'Bit Rate',
     unit: 'kbps'
   }, {
-    name: 'plays',
+    name: 'interactions.play_count',
     type: 'number',
     label: 'Plays'
   }, {
-    name: 'lastPlayed',
+    name: 'interactions.updated_at',
     type: 'date',
     label: 'Last Played'
   }, {
@@ -34,11 +34,11 @@ export default [
     label: 'Length',
     unit: 'seconds'
   }, {
-    name: 'dateAdded',
+    name: 'created_at',
     type: 'date',
     label: 'Date Added'
   }, {
-    name: 'dateModified',
+    name: 'updated_at',
     type: 'date',
     label: 'Date Modified'
   }

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import types from './types'
+import types from '../config/types'
 
 export default {
   props: {

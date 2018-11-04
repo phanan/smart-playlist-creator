@@ -1,9 +1,6 @@
 <template>
   <div class="row">
-    <div class="logic" v-if="!first">
-      <label><input type="radio" v-model="mutatedRule.logic" value="and" :name="`logic_${mutatedRule.id}`" checked> and</label>
-      <label><input type="radio" v-model="mutatedRule.logic" value="or" :name="`logic_${mutatedRule.id}`"> or</label>
-    </div>
+    <button @click.prevent="removeRule">&times;</button>
 
     <select v-model="selectedModel">
       <option v-for="model in models" :key="model.name" :value="model">{{ model.label }}</option>
@@ -22,19 +19,19 @@
     />
 
     <span class="suffix">{{ selectedOperator.unit || selectedModel.unit }}</span>
-    <button @click.prevent="removeRule">Remove</button>
   </div>
 </template>
 
 <script>
-import models from './models'
-import types from './types'
+import models from '../config/models'
+import types from '../config/types'
+
 import Rule from './Rule'
 import DynamicInput from './DynamicInput'
 
 export default {
   components: { Rule, DynamicInput },
-  props: ['rule', 'first'],
+  props: ['rule'],
 
   data: () => ({
     models,
@@ -51,10 +48,6 @@ export default {
       } else {
         this.selectedOperator = this.options[0]
       }
-    },
-
-    'mutatedRule.logic' () {
-      this.onInput()
     }
   },
 
@@ -88,7 +81,7 @@ export default {
 
   created () {
     this.mutatedRule = Object.assign({}, this.rule)
-    this.selectedModel = this.models.find(m => m === this.mutatedRule.model)
+    this.mutatedRule.model = this.selectedModel = this.models.find(m => m.name === this.mutatedRule.model)
     this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)
   },
 
@@ -96,8 +89,7 @@ export default {
     onInput () {
       this.$emit('input', {
         id: this.mutatedRule.id,
-        logic: this.mutatedRule.logic,
-        model: this.selectedModel,
+        model: this.selectedModel.name,
         operator: this.selectedOperator.operator,
         value: this.availableInputs.map(input => input.value)
       })
@@ -113,11 +105,6 @@ export default {
 <style lang="scss" scoped>
 .row {
   display: block;
-  padding: .5rem 0;
-  border-bottom: 1px solid #ccc;
-
-  input {
-    border: 1px solid #ccc;
-  }
+  padding-bottom: 8px;
 }
 </style>
