@@ -1,70 +1,110 @@
 <template>
-  <div>
-    <select v-model="selectedOption">
+  <div class="row">
+    <button @click.prevent="removeRule">&times;</button>
+
+    <select v-model="selectedModel">
+      <option v-for="model in models" :key="model.name" :value="model">{{ model.label }}</option>
+    </select>
+
+    <select v-model="selectedOperator">
       <option v-for="option in options" :value="option" :key="option.operator">{{ option.label }}</option>
     </select>
 
-    <dynamic-input
+    <rule-input
       v-for="input in availableInputs"
       :key="input.id"
-      :type="selectedOption.type || model.type"
+      :type="selectedOperator.type || selectedModel.type"
       v-model="input.value"
       @input="onInput"
     />
+
+    <span class="suffix">{{ selectedOperator.unit || selectedModel.unit }}</span>
   </div>
 </template>
 
 <script>
+import models from '../config/models'
 import types from '../config/types'
-import DynamicInput from './DynamicInput'
 
 export default {
-  components: { DynamicInput },
+  components: {
+    RuleInput: () => import('./RuleInput')
+  },
 
-  props: ['model'],
+  props: ['rule'],
 
   data: () => ({
-    selectedOption: null
+    models,
+    selectedModel: null,
+    selectedOperator: null,
+    inputValues: [],
+    mutatedRule: {},
   }),
+
+  watch: {
+    options () {
+      if (this.selectedModel === this.mutatedRule.model) {
+        this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)
+      } else {
+        this.selectedOperator = this.options[0]
+      }
+    }
+  },
 
   computed: {
     options () {
-      return types[this.model.type]
+      return this.selectedModel ? types[this.selectedModel.type] : []
     },
 
     availableInputs () {
-      if (!this.selectedOption) {
+      if (!this.selectedOperator) {
         return []
       }
 
       const inputs = []
 
-      for (let i = 0, inputCount =  this.selectedOption.inputs || 1; i < inputCount; ++i) {
-        inputs.push({ id: `${this.model.name}_${this.selectedOption.operator}_${i}`, value: ''})
+      for (let i = 0, inputCount =  this.selectedOperator.inputs || 1; i < inputCount; ++i) {
+        inputs.push({
+          id: `${this.mutatedRule.model.name}_${this.selectedOperator.operator}_${i}`,
+          value: this.isOriginalOperatorSelected ? this.mutatedRule.value[i] : ''
+        })
       }
 
       return inputs
+    },
+
+    isOriginalOperatorSelected () {
+      return this.selectedModel === this.mutatedRule.model &&
+        this.selectedOperator.operator === this.mutatedRule.operator
     }
   },
 
   created () {
-    this.selectedOption = this.options[0]
+    this.mutatedRule = Object.assign({}, this.rule)
+    this.mutatedRule.model = this.selectedModel = this.models.find(m => m.name === this.mutatedRule.model)
+    this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)
   },
 
   methods: {
     onInput () {
       this.$emit('input', {
-        model: this.model.name,
-        operator: this.selectedOption.operator,
+        id: this.mutatedRule.id,
+        model: this.selectedModel.name,
+        operator: this.selectedOperator.operator,
         value: this.availableInputs.map(input => input.value)
       })
+    },
+
+    removeRule () {
+      this.$emit('remove')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-div {
-  display: inline
+.row {
+  display: block;
+  padding-bottom: 8px;
 }
 </style>

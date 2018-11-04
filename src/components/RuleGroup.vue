@@ -5,7 +5,7 @@
       <span v-else>OR all of these criteria</span>
     </div>
 
-    <RuleRow
+    <Rule
       v-for="rule in mutatedGroup.rules"
       :key="rule.id"
       :rule="rule"
@@ -24,7 +24,7 @@ export default {
   props: ['group', 'isFirstGroup'],
 
   components: {
-    RuleRow: () => import('./RuleRow')
+    Rule: () => import('./Rule')
   },
 
   data: () => ({
