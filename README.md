@@ -1,6 +1,6 @@
 # smart-playlist-creator
 
-> A PoC smart playlist creator (à la iTunes).
+> A PoC smart playlist creator.
 
 ## Project setup
 ```
